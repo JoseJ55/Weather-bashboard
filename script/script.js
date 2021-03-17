@@ -19,9 +19,13 @@ var dayImg = document.getElementsByClassName("day-img");
 var dayTemp = document.getElementsByClassName("day-temp");
 var dayHumid = document.getElementsByClassName("day-humid");
 
+// This is the main function where the data comes from.
+// It fetchs the data and calls the function dashboard() and forecast() to show them on screen.
+// needed two urls since one is data for the day and theo other is for the next 5 days.
 var locationData = function(city){
     var url = "http://api.openweathermap.org/data/2.5/weather?q=" +  city + "&appid=4efedc1a1f5a11132edead6e391117fd"
     var url2 = "http://api.openweathermap.org/data/2.5/forecast?q=" +  city + "&appid=4efedc1a1f5a11132edead6e391117fd"
+    
     fetch(url).then(function(response){
         if(response.ok){
             response.json().then(function(data){
@@ -44,7 +48,10 @@ var locationData = function(city){
     })
 }
 
+// This function is the one where it show the data for the day.
+// It take in the data and goes through it so it can display it. 
 function dashboard(data){
+    // Still need to work on the uv can't find data for it
     var today = new Date();
     var day = today.getDate();
     var month = today.getMonth() + 1;
@@ -58,7 +65,10 @@ function dashboard(data){
     uv.innerHTML = "UV Index: ";
 }
 
+// This function is the second part to showing the data on the screen.
+// This function take in data for the next 5 days and put them appropiatly in the right place.
 function forecast(data){
+    // Need to work on the icon src
     var num =3;
     for(var i = 0; i < 5; i++){
         var today = new Date();
@@ -68,35 +78,80 @@ function forecast(data){
         var convertTemp = Math.round((1.8 * (data.list[num].main.temp - 273) + 32) * 10) / 10;
         
         dayDate[i].innerHTML = month + "/" + day + "/" + year;
-        dayImg[i].src = //data.list[num].weather.icon;
+        dayImg[i].src; //data.list[num].weather.icon;
         dayTemp[i].innerHTML = "Temp: " + convertTemp + "*F";
         dayHumid[i].innerHTML = "Humidity: " + data.list[num].main.humidity + "%";
 
-        console.log(data.list[num]);
-        console.log(num)
         num = num + 8;
     }
 }
 
-// assume values entered are only two words
+// This function is the one where it shows the most recent search history.
+function searchHistory(){
+    var pastCity = JSON.parse(localStorage.getItem("City"));
+    if(pastCity != null){
+        locationData(pastCity[pastCity.length - 1]);
+        for(var i = 0; i < pastCity.length; i++){
+            var cityBtns = document.getElementById("btn" + (i + 1));
+            cityBtns.style.display = "block";
+            cityBtns.textContent = pastCity[pastCity.length - i -1];
+        }
+    }
+}
+
+// THis function is formating the input so it can be use by the api url. 
 function changeText(tempText){
+    // assume values entered are only two words
     var splitWord = tempText.split(' ');
     var newWord = splitWord[0] + "+" + splitWord[1];
     return newWord;
 }
 
-// assume that the value entered is spelled correct and is a city
-searchBtn.addEventListener("click", function(){//test new york
+// This function adds any new searchs to the local history.
+// It also doesn't go over 8 items and removes old items after it reachs it.
+function add(n){
+    var oldCities = JSON.parse(localStorage.getItem("City"));
+    var items = [];
+    if(oldCities === null){
+        oldCities = "";  
+    } 
+
+    for(var i = 0; i < oldCities.length; i++){
+        items.push(oldCities[i]);
+    }
+
+    if(oldCities.length == 8){
+        items.push(n);
+        items.shift();
+    }
+    else{
+        items.push(n);
+    }
+    localStorage.setItem("City", JSON.stringify(items));
+    searchHistory();
+}
+
+// The function is called here so that when the site is refreshed it show the localstorage history.
+searchHistory();
+
+// The event listener for the main search button.
+searchBtn.addEventListener("click", function(){
+    // assume that the value entered is spelled correct and is a city
     var cityText = searchText.value;
+    add(cityText);
     var cityName;
+
     if (cityText.indexOf(' ') >= 0){
         cityName = changeText(cityText);
     } else{
         cityName = cityText;
     }
     locationData(cityName);
+    searchText.value = "";
 })
 
+// These event listeners are for the history buttons.
+// They all call locationData() to display there value.
 btn1.addEventListener("click", function(){
     var city = btn1.textContent; 
     locationData(city);
