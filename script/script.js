@@ -23,8 +23,8 @@ var dayHumid = document.getElementsByClassName("day-humid");
 // It fetchs the data and calls the function dashboard() and forecast() to show them on screen.
 // needed two urls since one is data for the day and theo other is for the next 5 days.
 var locationData = function(city){
-    var url = "http://api.openweathermap.org/data/2.5/weather?q=" +  city + "&appid=4efedc1a1f5a11132edead6e391117fd"
-    var url2 = "http://api.openweathermap.org/data/2.5/forecast?q=" +  city + "&appid=4efedc1a1f5a11132edead6e391117fd"
+    var url = "https://api.openweathermap.org/data/2.5/weather?q=" +  city + "&appid=4efedc1a1f5a11132edead6e391117fd"
+    var url2 = "https://api.openweathermap.org/data/2.5/forecast?q=" +  city + "&appid=4efedc1a1f5a11132edead6e391117fd"
     
     fetch(url).then(function(response){
         if(response.ok){
