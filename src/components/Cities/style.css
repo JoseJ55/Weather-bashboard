@@ -1,0 +1,6 @@
+#SearchButtons {
+    flex-direction: column;
+    width: 25%;
+    background-color: #ccccff;
+    height: 87vh;
+}
