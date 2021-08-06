@@ -3,6 +3,7 @@ import "./main.css";
 
 import Header from "./../components/Header/Header";
 import Cities from "./../components/Cities/Cities";
+import Weather from "./../components/Weather/Weather";
 
 function Home() {
     return (
@@ -10,6 +11,7 @@ function Home() {
             <Header />
             <div id="homeData">
                 <Cities />
+                <Weather />
             </div>
         </div>
     )
