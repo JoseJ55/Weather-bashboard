@@ -11,7 +11,7 @@ function Home() {
             <Header />
             <div id="homeData">
                 <Cities />
-                <Weather />
+                {/* <Weather /> */}
             </div>
         </div>
     )
