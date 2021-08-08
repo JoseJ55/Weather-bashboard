@@ -11,19 +11,29 @@ function Current() {
     useEffect(() => {
         var today = new Date();
         SetDate(`${parseInt(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`)
-    })
+    }, [])
     
     return (
+        
         <div id="current">
             <div id="title">
                 <p id="cityName"><strong>{current.name} </strong></p>
                 <p id="date"><strong>{`(${date})`}</strong></p>
             </div>
             <div id="currentData">
-                <p id="cityTemp">Temperature: {current.main.temp}*F</p>
-                <p id="cityHumidity">Humidity:{current.main.humidity} %</p>
-                <p id="cityWind">Wind Speed: {current.wind.speed}MPH</p>
-                <p id="cityUV">UV Index: </p>
+                {current.main != null ?
+                    <>
+                    <p id="cityTemp">Temperature: {current.main.temp}*F</p>
+                    <p id="cityHumidity">Humidity:{current.main.humidity} %</p>
+                    <p id="cityWind">Wind Speed: {current.wind.speed}MPH</p>
+                    </>
+                    :
+                    <>
+                    <p id="cityTemp">Temperature: 0*F</p>
+                    <p id="cityHumidity">Humidity: 0%</p>
+                    <p id="cityWind">Wind Speed: MPH</p>
+                    </>
+                }
             </div>
         </div> 
     )
