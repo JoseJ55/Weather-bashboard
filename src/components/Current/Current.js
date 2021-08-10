@@ -23,7 +23,7 @@ function Current() {
             <div id="currentData">
                 {current.main != null ?
                     <>
-                    <p id="cityTemp">Temperature: {current.main.temp}*F</p>
+                    <p id="cityTemp">Temperature: {Math.round((1.8 * (current.main.temp - 273) + 32) *10) /10}*F</p>
                     <p id="cityHumidity">Humidity:{current.main.humidity} %</p>
                     <p id="cityWind">Wind Speed: {current.wind.speed}MPH</p>
                     </>

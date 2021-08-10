@@ -8,18 +8,26 @@ import { WeatherContext } from "./../../weatherContext"
 function Future() {
     const { current, setCurrent } = useContext(WeatherContext);
     const [date, SetDate] = useState("");
-    const [currentForCast, setCurrentForCast] = useState([]);
-
+    const [currentForCast, setCurrentForCast] = useState({});
+    console.log(current)
+    console.log(currentForCast)
+    
     useEffect(() => {
         var today = new Date();
         SetDate(`${parseInt(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`)
+        
+        var url = "https://api.openweathermap.org/data/2.5/forecast?q=" +  current.name + "&appid=4efedc1a1f5a11132edead6e391117fd";
+        if (current != null) {
+            axios.get(url).then((data) => {
+                setCurrentForCast(data.data)
+            })
+        }
     }, [])
 
     useEffect(() => {
-        var url = "https://api.openweathermap.org/data/2.5/forecast?q=" +  current.name.toLowerCase() + "&appid=4efedc1a1f5a11132edead6e391117fd"
-        
+        var url = "https://api.openweathermap.org/data/2.5/forecast?q=" +  current.name + "&appid=4efedc1a1f5a11132edead6e391117fd";
         axios.get(url).then((data) => {
-            console.log(data)
+            setCurrentForCast(data.data)
         })
     }, [current])
 
@@ -56,21 +64,48 @@ function Future() {
         }
     ])
 
+    const futureData = () => {
+        let num = 3;
+        // Object.keys(currentForCast.list[num]).map(([key, value]) => {
+        for(var i = 0; i < 5; i++){
+            // console.log(key, value)
+            // let num = 3;
+            return(
+                <div className="day">
+                    <h3 className="dayDate">{currentForCast.list[num].dt_txt}</h3>
+                    <p>{currentForCast.list[num].weather[0].icon}</p>
+                    <p>Temp: {currentForCast.list[num].main.temp}*F</p>
+                    <p>Humidity: {currentForCast.list[num].main.humidity}%</p>
+                    {num += 8}
+                </div>
+            )
+        }
+    }
+
     return (
         <div id="future">
             <p id="futureTitle"><strong>5-Day Focast</strong></p>
             <div id="days">
             {/* {current.main != null ? */}
-                {fake.map((data) => {
-                    return(
-                        <div className="day">
-                            <h3 className="dayDate">{data.date}</h3>
-                            <p>{data.icon}</p>
-                            <p>Temp: {data.temp}*F</p>
-                            <p>Humidity: {data.humidity}%</p>
-                        </div>
-                    )
-                })}
+                {currentForCast == null ? 
+                    <p></p>
+                    :
+                    {futureData}
+                    // let num = 3;
+                    // Object.keys(currentForCast.list[num]).map(([key, value]) => {
+                    //     console.log(key, value)
+                    //     // let num = 3;
+                    //     // return(
+                    //     //     <div className="day">
+                    //     //         <h3 className="dayDate">{data.list[num].dt_txt}</h3>
+                    //     //         <p>{data.icon}</p>
+                    //     //         <p>Temp: {data.list[num].main.temp}*F</p>
+                    //     //         <p>Humidity: {data.list[num].main.humidity}%</p>
+                    //     //         {num += 8}
+                    //     //     </div>
+                    //     // )
+                    // })
+                }
                 {/* : */}
 
             {/* } */}
