@@ -3,11 +3,14 @@ import React, { createContext, useState } from "react";
 export const WeatherContext = createContext();
 export const PastContext = createContext();
 export const ForcastContext = createContext();
+export const currentForcastContext = createContext();
 
 export function WeatherProvider({ children }) {
     const [current, setCurrent] = useState({});
     const [pastCities, setPastCities] = useState([]);
     const [forCast, setForCast] = useState([]);
+    const [currentForCast, setCurrentForCast] = useState([]);
+
 
     return (
         <WeatherContext.Provider value={{current, setCurrent}}>

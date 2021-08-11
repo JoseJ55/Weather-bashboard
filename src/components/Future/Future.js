@@ -1,114 +1,73 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import "./style.css";
 import axios from "axios";
 
 import {BiSun} from "react-icons/bi";
-import { WeatherContext } from "./../../weatherContext"
+import { WeatherContext } from "../../weatherContext"
 
 function Future() {
-    const { current, setCurrent } = useContext(WeatherContext);
+    const { current } = useContext(WeatherContext);
     const [date, SetDate] = useState("");
-    const [currentForCast, setCurrentForCast] = useState({});
+    const [currentForCast, setCurrentForCast] = useState([]);
+    const [loading, setLoading] = useState(true)
+    const [lower, setLower] = useState("")
     console.log(current)
-    console.log(currentForCast)
     
     useEffect(() => {
         var today = new Date();
         SetDate(`${parseInt(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`)
-        
-        var url = "https://api.openweathermap.org/data/2.5/forecast?q=" +  current.name + "&appid=4efedc1a1f5a11132edead6e391117fd";
-        if (current != null) {
-            axios.get(url).then((data) => {
-                setCurrentForCast(data.data)
-            })
-        }
+
+        // this is undefined, but thign work when commented out. Need to find
+        // out how to make it no undefined.
+        setLower(current.name)
     }, [])
 
-    useEffect(() => {
-        var url = "https://api.openweathermap.org/data/2.5/forecast?q=" +  current.name + "&appid=4efedc1a1f5a11132edead6e391117fd";
+    useLayoutEffect(() => {
+        // setLower(current.name)
+        console.log(lower)
+        console.log(current.name)
+        var url = `https://api.openweathermap.org/data/2.5/forecast?q=${current.name}&appid=4efedc1a1f5a11132edead6e391117fd`;
+        
+        console.log(url)
+
         axios.get(url).then((data) => {
-            setCurrentForCast(data.data)
+            console.log(data)
+            let tempData = []
+            data.data.list.map((data) => {
+                if (data.dt_txt.includes("12:00:00")){
+                    tempData.push(data)
+                }
+            })
+            //this is undefined on the second map on line 58.
+            setCurrentForCast(tempData)
+            // setLoading(false)
+        }).catch((err) => {
+            console.log(err)
+            setLoading(true)
         })
+
     }, [current])
-
-    const [fake, setFake] = useState([
-        {
-            date: "8/3/2021",
-            icon: <BiSun/>,
-            temp: 58,
-            humidity: 85
-        },
-        {
-            date: "8/4/2021",
-            icon: <BiSun/>,
-            temp: 58,
-            humidity: 85
-        },
-        {
-            date: "8/5/2021",
-            icon: <BiSun/>,
-            temp: 58,
-            humidity: 85
-        },
-        {
-            date: "8/6/2021",
-            icon: <BiSun/>,
-            temp: 58,
-            humidity: 85
-        },
-        {
-            date: "8/7/2021",
-            icon: <BiSun/>,
-            temp: 58,
-            humidity: 85
-        }
-    ])
-
-    const futureData = () => {
-        let num = 3;
-        // Object.keys(currentForCast.list[num]).map(([key, value]) => {
-        for(var i = 0; i < 5; i++){
-            // console.log(key, value)
-            // let num = 3;
-            return(
-                <div className="day">
-                    <h3 className="dayDate">{currentForCast.list[num].dt_txt}</h3>
-                    <p>{currentForCast.list[num].weather[0].icon}</p>
-                    <p>Temp: {currentForCast.list[num].main.temp}*F</p>
-                    <p>Humidity: {currentForCast.list[num].main.humidity}%</p>
-                    {num += 8}
-                </div>
-            )
-        }
-    }
 
     return (
         <div id="future">
             <p id="futureTitle"><strong>5-Day Focast</strong></p>
             <div id="days">
-            {/* {current.main != null ? */}
-                {currentForCast == null ? 
-                    <p></p>
+                {loading ? 
+                    <p>Loading...</p>
                     :
-                    {futureData}
-                    // let num = 3;
-                    // Object.keys(currentForCast.list[num]).map(([key, value]) => {
-                    //     console.log(key, value)
-                    //     // let num = 3;
-                    //     // return(
-                    //     //     <div className="day">
-                    //     //         <h3 className="dayDate">{data.list[num].dt_txt}</h3>
-                    //     //         <p>{data.icon}</p>
-                    //     //         <p>Temp: {data.list[num].main.temp}*F</p>
-                    //     //         <p>Humidity: {data.list[num].main.humidity}%</p>
-                    //     //         {num += 8}
-                    //     //     </div>
-                    //     // )
-                    // })
+                    currentForCast.list.map((data) => {
+                        // console.log(data)
+                        // console.log(lower)
+                        return(
+                            <div className="day">
+                                <h3 className="dayDate">{data.dt_txt}</h3>
+                                <p>{data.weather[0].icon}</p>
+                                <p>Temp: {data.main.temp}*F</p>
+                                <p>Humidity: {data.main.humidity}%</p>
+                            </div>
+                        )
+                    })
                 }
-                {/* : */}
-
-            {/* } */}
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ import { WeatherContext, PastContext } from "./../../weatherContext"
 
 function SearchBar() {
     const [searchText, setSearchText] = useState("");
-    const { current, setCurrent } = useContext(WeatherContext);
+    const { setCurrent } = useContext(WeatherContext);
     const {pastCities, setPastCities} = useContext(PastContext);
 
     useEffect(() => {
