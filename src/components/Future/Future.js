@@ -38,15 +38,23 @@ function Future() {
                     tempData.push(data)
                 }
             })
+            // console.log(tempData)
             //this is undefined on the second map on line 58.
             setCurrentForCast(tempData)
-            // setLoading(false)
+            setLoading(false)
         }).catch((err) => {
-            console.log(err)
+            // console.log(err)
             setLoading(true)
         })
 
     }, [current])
+
+    const getDate = (text) => {
+        let tempText = text.split(" ")
+        let t = tempText[0].split("-")
+        let newtext = `${t[1]}/${t[2]}/${t[0]}`
+        return(newtext)
+    }
 
     return (
         <div id="future">
@@ -55,14 +63,14 @@ function Future() {
                 {loading ? 
                     <p>Loading...</p>
                     :
-                    currentForCast.list.map((data) => {
+                    currentForCast.map((data) => {
                         // console.log(data)
                         // console.log(lower)
                         return(
                             <div className="day">
-                                <h3 className="dayDate">{data.dt_txt}</h3>
+                                <h3 className="dayDate">{getDate(data.dt_txt)}</h3>
                                 <p>{data.weather[0].icon}</p>
-                                <p>Temp: {data.main.temp}*F</p>
+                                <p>Temp: {Math.round((1.8 * (data.main.temp - 273) + 32) *10) /10}*F</p>
                                 <p>Humidity: {data.main.humidity}%</p>
                             </div>
                         )
