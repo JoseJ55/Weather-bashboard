@@ -4,9 +4,9 @@ import "./style.css";
 import { WeatherContext } from "./../../weatherContext"
 
 function Current() {
-    const { current, setCurrent } = useContext(WeatherContext);
+    const { current } = useContext(WeatherContext);
     const [date, SetDate] = useState("");
-    console.log(current)
+    // console.log(current)
 
     useEffect(() => {
         var today = new Date();
@@ -23,6 +23,7 @@ function Current() {
             <div id="currentData">
                 {current.main != null ?
                     <>
+                    <img src={`http://openweathermap.org/img/w/${current.weather[0].icon}.png`} alt="weather icon"/>
                     <p id="cityTemp">Temperature: {Math.round((1.8 * (current.main.temp - 273) + 32) *10) /10}*F</p>
                     <p id="cityHumidity">Humidity:{current.main.humidity} %</p>
                     <p id="cityWind">Wind Speed: {current.wind.speed}MPH</p>

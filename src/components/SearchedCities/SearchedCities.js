@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect }from "react";
 import "./style.css";
+import axios from "axios";
 
-import { PastContext } from "./../../weatherContext"
+import { PastContext, WeatherContext } from "./../../weatherContext"
 
 function SearchedCities() {
-    const {pastCities, setPastCities} = useContext(PastContext);
-    // get data from indexdb here
+    const {pastCities} = useContext(PastContext);
+    const { setCurrent } = useContext(WeatherContext);
 
     useEffect(() => {
         console.log("update")
@@ -24,7 +25,12 @@ function SearchedCities() {
     const storedCity = JSON.parse(localStorage.getItem("oldCities"))
 
     const searchPastCity = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
+        const url = "https://api.openweathermap.org/data/2.5/weather?q=" + e.target.value + "&appid=4efedc1a1f5a11132edead6e391117fd";
+        
+        axios.get(url).then((data) => {
+            setCurrent(data.data)
+        })
     }
 
     return(

@@ -11,7 +11,6 @@ function Future() {
     const [currentForCast, setCurrentForCast] = useState([]);
     const [loading, setLoading] = useState(true)
     const [lower, setLower] = useState("")
-    console.log(current)
     
     useEffect(() => {
         var today = new Date();
@@ -23,15 +22,9 @@ function Future() {
     }, [])
 
     useLayoutEffect(() => {
-        // setLower(current.name)
-        console.log(lower)
-        console.log(current.name)
         var url = `https://api.openweathermap.org/data/2.5/forecast?q=${current.name}&appid=4efedc1a1f5a11132edead6e391117fd`;
         
-        console.log(url)
-
         axios.get(url).then((data) => {
-            console.log(data)
             let tempData = []
             data.data.list.map((data) => {
                 if (data.dt_txt.includes("12:00:00")){
@@ -64,12 +57,10 @@ function Future() {
                     <p>Loading...</p>
                     :
                     currentForCast.map((data) => {
-                        // console.log(data)
-                        // console.log(lower)
                         return(
                             <div className="day">
                                 <h3 className="dayDate">{getDate(data.dt_txt)}</h3>
-                                <p>{data.weather[0].icon}</p>
+                                <img src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`} alt="weather icon"/>
                                 <p>Temp: {Math.round((1.8 * (data.main.temp - 273) + 32) *10) /10}*F</p>
                                 <p>Humidity: {data.main.humidity}%</p>
                             </div>
