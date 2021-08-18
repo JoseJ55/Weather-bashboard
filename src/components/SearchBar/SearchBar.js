@@ -17,9 +17,11 @@ function SearchBar() {
     // This effect get the last city searched fromt he local storage.
     useEffect(() => {
         const pastCity = JSON.parse(localStorage.getItem("oldCities"))
-        if(pastCity.length !== 0){
-            setPastCities(pastCity)
-            past(pastCity.reverse()[0])
+        if(pastCity != null){
+            if(pastCity.length !== 0){
+                setPastCities(pastCity)
+                past(pastCity.reverse()[0])
+            }
         }
     }, [])
 
