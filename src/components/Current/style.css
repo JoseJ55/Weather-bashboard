@@ -1,0 +1,23 @@
+#current {
+    width: 80%;
+    border: .1rem grey solid;
+    border-radius: 10px;
+    flex-direction: column;
+    margin: 3vh 0;
+    padding: 5vh 3vw;
+}
+
+#title {
+    display: flex;
+    font-size: 2rem;
+    font-weight: 200;
+}
+
+#cityName {
+    margin-right: 1vw;
+}
+
+#currentData p{
+    margin: 3vh 1vw;
+    font-size: 1.3rem;
+}

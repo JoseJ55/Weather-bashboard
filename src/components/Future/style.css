@@ -1,0 +1,31 @@
+#future {
+    width: 90%;
+    padding: 1vh 0;
+}
+
+#futureTitle {
+    font-size: 1.8rem;
+    margin-left: 1vw;
+}
+
+#days {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 2vh 0;
+}
+
+.day {
+    background-color: royalblue;
+    border: .1rem grey solid;
+    border-radius: 5px;
+    padding: 2vh 2vw;
+}
+
+.day p {
+    font-size: 1.1rem;
+    padding: 1.5vh 0;
+}
+
+.dayDate {
+    font-size: 1.6rem;
+}

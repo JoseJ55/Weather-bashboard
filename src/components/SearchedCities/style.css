@@ -1,0 +1,27 @@
+#searched {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.searchedCity {
+    width: 85%;
+    background-color: white;
+    border: .1rem grey solid;
+    border-radius: 10px;
+    padding: 1.9vh 1vw;
+    margin: 1vh 0;
+    font-size: 1.2rem;
+}
+
+.searchedCity:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.searchedCity:active {
+    background-color: #999;
+}
+
