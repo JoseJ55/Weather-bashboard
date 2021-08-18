@@ -1,4 +1,4 @@
-import React,{ useEffect, useContext, useState } from "react";
+import React,{ useEffect, useContext } from "react";
 import "./style.css";
 import axios from "axios";
 
@@ -7,9 +7,9 @@ import Future from "./../Future/Future";
 import { WeatherContext } from "../../weatherContext"
 
 function Weather() {
-    const { current, setCurrent } = useContext(WeatherContext);
-    const [currentForCast, setCurrentForCast] = useState([]);
-
+    // This component get the forcast and orginizes the data for the current
+    // time for each day. It also holds the other components that render the data.
+    const { current } = useContext(WeatherContext);
 
     useEffect(() => {
         var url = "https://api.openweathermap.org/data/2.5/forecast?q=" +  current.name + "&appid=4efedc1a1f5a11132edead6e391117fd";
@@ -18,13 +18,9 @@ function Weather() {
                 let tempData = []
                 data.data.list.map((data) => {
                     if (data.dt_txt.includes("12:00:00")){
-                        // console.log(data)
                         tempData.push(data)
                     }
-                    // console.log(data.dt_txt )
                 })
-                // console.log(data.data.list)
-                setCurrentForCast(tempData)
             })
         }
     }, [])

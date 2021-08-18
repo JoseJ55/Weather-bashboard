@@ -1,29 +1,23 @@
-import React, { useState, useContext, useEffect }from "react";
+import React, { useContext, useEffect }from "react";
 import "./style.css";
 import axios from "axios";
 
 import { PastContext, WeatherContext } from "./../../weatherContext"
 
 function SearchedCities() {
+    // This component renders the past citys search by the user from the
+    // localstorage in the browser.
     const {pastCities} = useContext(PastContext);
     const { setCurrent } = useContext(WeatherContext);
 
+    //This effect is just to update component.
     useEffect(() => {
         console.log("update")
     }, [pastCities])
 
-    const [fake, setFake] = useState([
-        "New York", 
-        "Seattle", 
-        "Los Angeles",
-        "Austin",
-        "Hesperia",
-        "VictorVille",
-        "New Jursey",
-        "Los Vegas"
-    ])
     const storedCity = JSON.parse(localStorage.getItem("oldCities"))
 
+    // This function get the data for the city clicked on from the past.
     const searchPastCity = (e) => {
         // console.log(e.target.value)
         const url = "https://api.openweathermap.org/data/2.5/weather?q=" + e.target.value + "&appid=4efedc1a1f5a11132edead6e391117fd";

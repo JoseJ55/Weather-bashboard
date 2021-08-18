@@ -9,7 +9,6 @@ export function WeatherProvider({ children }) {
     const [current, setCurrent] = useState({});
     const [pastCities, setPastCities] = useState([]);
     const [forCast, setForCast] = useState([]);
-    const [currentForCast, setCurrentForCast] = useState([]);
 
 
     return (

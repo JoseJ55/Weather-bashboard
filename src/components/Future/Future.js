@@ -1,26 +1,18 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
+import React, { useState, useContext, useLayoutEffect } from "react";
 import "./style.css";
 import axios from "axios";
 
-import {BiSun} from "react-icons/bi";
 import { WeatherContext } from "../../weatherContext"
 
 function Future() {
+    // This component renders the forcast for the next five days for the city
+    // searched and the current time.
     const { current } = useContext(WeatherContext);
-    const [date, SetDate] = useState("");
     const [currentForCast, setCurrentForCast] = useState([]);
     const [loading, setLoading] = useState(true)
-    const [lower, setLower] = useState("")
-    
-    useEffect(() => {
-        var today = new Date();
-        SetDate(`${parseInt(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`)
 
-        // this is undefined, but thign work when commented out. Need to find
-        // out how to make it no undefined.
-        setLower(current.name)
-    }, [])
-
+    // This effect gets the forcast of the current city searched, and if there
+    // isn't a current city yet it will only render "Loading".
     useLayoutEffect(() => {
         var url = `https://api.openweathermap.org/data/2.5/forecast?q=${current.name}&appid=4efedc1a1f5a11132edead6e391117fd`;
         
@@ -31,8 +23,7 @@ function Future() {
                     tempData.push(data)
                 }
             })
-            // console.log(tempData)
-            //this is undefined on the second map on line 58.
+
             setCurrentForCast(tempData)
             setLoading(false)
         }).catch((err) => {
@@ -42,6 +33,7 @@ function Future() {
 
     }, [current])
 
+    // This function get the date of the forcasted day and formats them to "mm/dd/yyyy".
     const getDate = (text) => {
         let tempText = text.split(" ")
         let t = tempText[0].split("-")

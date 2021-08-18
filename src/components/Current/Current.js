@@ -4,10 +4,11 @@ import "./style.css";
 import { WeatherContext } from "./../../weatherContext"
 
 function Current() {
+    // This component gets data for teh currnt city and renders it.
     const { current } = useContext(WeatherContext);
     const [date, SetDate] = useState("");
-    // console.log(current)
 
+    // This effect get the current date and formats it.
     useEffect(() => {
         var today = new Date();
         SetDate(`${parseInt(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`)
